@@ -6,16 +6,23 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
+  
 })
 export class NavbarComponent {
   logoImage = "/assets/img/logo.png";
   navbarLinks  = [
-    {link:'/',name:'home'},
+    {link:'/',name:'Home'},
     {link:'/explore',name:'Explore'},
     {link:'/progress',name:'Progress'},
     {link:'/about',name:'About'},
     {link:'/docs',name:'Docs'},
-  ]
+  ];
+
+  isNavbarOpen = false;
+
+  toggleNavbar() {
+    this.isNavbarOpen = !this.isNavbarOpen;
+  }
 
 }
