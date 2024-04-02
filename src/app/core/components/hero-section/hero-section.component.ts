@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.scss'
 })
-export class HeroSectionComponent {
+export class HeroSectionComponent{
   
 
 }

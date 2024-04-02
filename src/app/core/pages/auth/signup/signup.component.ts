@@ -40,6 +40,9 @@ export class SignupComponent{
       email: this.email,
       password: this.password
     }).subscribe((res: any) => {
+      if(res.ok){
+        window.location.href = '/';
+      }
       console.log(res);
       // Handle response as needed
     });
