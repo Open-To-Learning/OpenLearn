@@ -54,7 +54,7 @@ export class UploadVideoComponent {
   selectCourseFormControl = new FormControl<Course | null>(null, [Validators.required]);
   // course select end
   
-  youtubeFormControl = new FormControl('', [Validators.required, youtubeLinkValidator]);
+  youtubeFormControl = new FormControl('', [Validators.required, youtubeLinkValidator()]);
   lectureTitleControl = new FormControl('', [Validators.required]);
 
   // thubnail part start
