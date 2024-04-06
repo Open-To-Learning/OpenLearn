@@ -33,9 +33,10 @@ sendUserDetails(event: Event) {
  this.http.post('http://localhost:5000/auth/login', {
   userName: this.userName,
   password: this.password
- }).subscribe((res: any) => {
+ },{withCredentials:true}).subscribe((res: any) => {
   if(res.ok){
-    window.location.href = '/'
+    
+    window.location.href = '/';
   }
    console.log(res);
   

@@ -1,15 +1,19 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, HttpClientModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
+  constructor(private http: HttpClient) { }
   logoImage = "/assets/img/logo.png";
   isuserLoggedIn = false;
   navbarLinks = [
@@ -19,7 +23,7 @@ export class NavbarComponent implements OnInit {
     { link: '/about', name: 'About' },
     { link: '/docs', name: 'Docs' },
   ];
-  profileFloatingNavigation =[
+  profileFloatingNavigation = [
     { link: '/user/0', name: 'profile' },
     { link: '/settings', name: 'settings' },
   ]
@@ -29,29 +33,44 @@ export class NavbarComponent implements OnInit {
 
   cookies: string = "";
 
-  // constructor(private renderer: Renderer2) {}
-
   ngOnInit(): void {
-    // Check if document object is available (not in Angular Universal or server-side rendering)
-    if (typeof document !== 'undefined') {
-      
-      this.cookies = document.cookie.split("user=")[1];
-      console.log(this.cookies);
-      if(this.cookies){
-
+    this.checkCookie().subscribe((res: any) => {
+      if (res.ok) {
+        console.log('cookies found!');
         this.isuserLoggedIn = true;
+      } else {
+        console.log('cookies not found!');
+        // window.location.href = '/login';
       }
-      
-    }
+    });
+  }
+
+  checkCookie(): Observable<any> {
+    return this.http.get('http://localhost:5000/auth/is-valid-Cookie', { withCredentials: true }).pipe(
+      tap((res: any) => {
+        if (!res.ok) {
+          // If user is not authenticated, redirect to login page
+          window.location.href = '/login';
+        }
+      })
+    );
   }
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;
   }
-  toggleprofilefunc(){
+
+  toggleprofilefunc() {
     this.toggleprofile = !this.toggleprofile;
   }
-  logout(){
 
+  logout() {
+    this.http.post('http://localhost:5000/auth/logout', {}, { withCredentials: true }).subscribe((res: any) => {
+      if (!res.ok) {
+        return;
+      }
+      window.location.href = '/login';
+      console.log(res);
+    });
   }
 }

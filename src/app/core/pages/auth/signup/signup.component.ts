@@ -39,7 +39,7 @@ export class SignupComponent{
       userName: this.userName,
       email: this.email,
       password: this.password
-    }).subscribe((res: any) => {
+    },{withCredentials:true}).subscribe((res: any) => {
       if(res.ok){
         window.location.href = '/';
       }
