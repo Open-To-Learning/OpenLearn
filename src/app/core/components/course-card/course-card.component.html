@@ -2,7 +2,7 @@
     <div
       class="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
       <img
-        [src]="course.thumbnail.base64"
+        [src]="course?.thumbnail?.base64"
         alt="ui/ux review check" />
       <div
         class="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60">
@@ -32,14 +32,14 @@
       </div>
       <p class="block font-sans  text-base antialiased font-light leading-relaxed text-gray-700 h-24 overflow-hidden">
          
-          {{course.description}}
+          {{course?.description}}
       </p>
       
     </div>
     <div class="p-6 pt-3">
       <a
         class="block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-        type="button"  [routerLink]="'/course/'+course._id">
+        type="button"  [routerLink]="'/course/'+course?._id">
         Browse
     </a>
     </div>
