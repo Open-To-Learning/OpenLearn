@@ -11,9 +11,6 @@ import { CourseCardComponent } from '../course-card/course-card.component';
 export class ExploreComponent implements OnInit {
    cookies:string = "";
   ngOnInit(): void {
-    this.cookies = document.cookie.split("user=")[1];
-    if(!this.cookies){
-      window.location.href = "/signup"
-    }
+    
   }
 }
