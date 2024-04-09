@@ -8,6 +8,7 @@ import { ExploreComponent } from './core/pages/explore/explore.component';
 import { CourseVisitComponent } from './core/pages/course-visit/course-visit.component';
 import { UploadVideoComponent } from './core/components/upload-video/upload-video.component';
 import { CoursePlayerComponent } from './core/pages/course-player/course-player.component';
+import { CourseVideoFormComponent } from './core/pages/course-video-form/course-video-form.component';
 export const routes: Routes = [
     {path:'' , component:HomeComponent},
     {path:'upload' , component:UploadVideoComponent},
@@ -16,6 +17,7 @@ export const routes: Routes = [
     {path:'coursePlayer' , component:CoursePlayerComponent},
     {path:'user/:userName' , component:UserProfileComponent},
     {path:'explore' , component:ExploreComponent},
+    {path:'videoForm' , component:CourseVideoFormComponent},
     {path:'course/:id' , component:CourseVisitComponent},
     {path:'**', pathMatch:'full' , component:ErrorPageComponent},
 ];
