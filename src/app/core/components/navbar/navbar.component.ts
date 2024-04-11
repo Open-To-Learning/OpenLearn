@@ -25,8 +25,8 @@ export class NavbarComponent implements OnInit {
   ];
   profileFloatingNavigation = [
     { link: '/user/0', name: 'profile' },
-    { link: '/settings', name: 'settings' },
     { link: '/videoForm', name: 'Create' },
+    { link: '/settings', name: 'settings' },
   ]
   toggleprofile = false;
 
@@ -53,6 +53,7 @@ export class NavbarComponent implements OnInit {
           // If user is not authenticated, redirect to login page
           window.location.href = '/login';
         }
+        this.profileFloatingNavigation[0].link = '/user/'+res.userName
       })
     );
   }

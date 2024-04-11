@@ -20,11 +20,8 @@ export class CourseVisitComponent implements OnInit {
 
         this.courseData=res.info;
       }
-        console.log(this.courseData);
         
     })
-  
-    console.log(id);
   }
   
 
