@@ -1,6 +1,7 @@
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Validators, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { Validators, FormsModule, ReactiveFormsModule, FormBuilder, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,20 +18,23 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
-    NgIf,
+    CommonModule,
+    HttpClientModule,
     MatIconModule
   ],
   templateUrl: './course-video-form.component.html',
   styleUrl: './course-video-form.component.scss'
 })
 export class CourseVideoFormComponent {
+  constructor(private _formBuilder: FormBuilder,private http: HttpClient) {}
+
   videoFormGroup = this._formBuilder.group({
-    courseVideoLinkCtrl: ['', Validators.required],
-    courseTitleCtrl: ['', Validators.required],
-    courseDescriptionCtrl: ['', Validators.required],
-    courseThumbnailCtrl: ['', Validators.required],
-    coursePriceCtrl: ['', Validators.required]
-  });
+    courseVideoLinkCtrl : new FormControl('', Validators.required),
+    courseTitleCtrl: new FormControl('', Validators.required),
+    courseDescriptionCtrl: new FormControl('', Validators.required),
+    courseThumbnailCtrl: new FormControl('', Validators.required),
+    coursePriceCtrl: new FormControl('', Validators.required)
+});
 
   // course thubnail
   imageName: string | ArrayBuffer | null = null;
@@ -56,12 +60,46 @@ export class CourseVideoFormComponent {
   fetchedSuccess: boolean = false;
 
   fetchVideo() {
-    this.fetchedSuccess = true;
+    const videoID = this.extractVideoId(this.videoFormGroup.controls.courseVideoLinkCtrl.value);
+    
+    try{
+     this.http.get(`http://localhost:5000/api/v1/yt-video-url/${videoID}/video-details`,{withCredentials:true}).subscribe((res:any)=>{
+      console.log(res);
+      if(!res.ok){
+        return ;
+      }
+      this.videoFormGroup.controls.courseTitleCtrl = res.title;
+      this.videoFormGroup.controls.courseThumbnailCtrl = res.thubnail;
+
+      this.fetchedSuccess = true;
+
+      
+     })
+    }catch(err){
+
+      
+    }
   }
 
-  constructor(
-    private _formBuilder: FormBuilder
-  ) {
+  extractVideoId(url:any) {
 
-  }
+    // var regex = /[?&]v=([^&#]+)/;
+    var regex = /youtu\.be\/([^?]+)/;// https://youtu.be/AN2SILis5zY?si=kcEvn_xa7i9Gd50j
+    console.log(url);
+    
+    var match = url.match(regex);
+    
+    // Check if match found
+    if (match && match[1]) {
+        return match[1];
+    } else {
+      regex = /[?&]v=([^&#]+)/;
+      match = url.match(regex);
+      if (match && match[1]) {
+        return match[1];
+    }
+    
+        return null;
+    }
+}
 }

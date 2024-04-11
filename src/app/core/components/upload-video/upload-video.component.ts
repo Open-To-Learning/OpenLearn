@@ -24,6 +24,7 @@ interface Course {
 export class UploadVideoComponent {
   // course select start
   selectedCourse: Course | null = null;
+  
 
   coursesList: Course[] = [
     { id: 1, name: 'A' },
@@ -45,6 +46,7 @@ export class UploadVideoComponent {
 
         @ this only works when something is selected in the course 
     */
+   
   }
 
   trackByFn(index: number, item: Course): number {
@@ -66,6 +68,7 @@ export class UploadVideoComponent {
     const file = event.target.files[0];
     this.previewImage(file);
     this.imageName = file.name;
+    
   }
 
   previewImage(file: File): void {
