@@ -12,7 +12,7 @@
 
 <div class="container">
 
-    <form [formGroup]="videoFormGroup">
+    <div [formGroup]="videoFormGroup">
         <h2>Video Details:</h2>
         <div class="formContainer flexContainer">
             <div class="formSubContainer formInputFeild">
@@ -21,8 +21,9 @@
 
                     <mat-form-field style="width: 100%;">
                         <mat-label>Videl Link</mat-label>
-                        <input type="text" matInput formControlName="courseVideoLinkCtrl">
-                        @if(videoFormGroup.controls.courseVideoLinkCtrl.hasError('required')) {
+                        <input type="text" [value]="this.video.link" matInput formControlName="courseVideoLinkCtrl">
+                        @if(videoFormGroup.get('courseVideoLinkCtrl')?.invalid &&
+                        videoFormGroup.get('courseVideoLinkCtrl')?.touched) {
                         <mat-error>
                             Course Video Link is <strong>required</strong>
                         </mat-error>
@@ -51,8 +52,9 @@
                 <h3>Course Title:</h3>
                 <mat-form-field style="width: 100%;">
                     <mat-label>Title</mat-label>
-                    <input type="text" matInput formControlName="courseTitleCtrl">
-                    @if(videoFormGroup.controls.courseTitleCtrl.hasError('required')) {
+                    <input type="text" [value]="this.video.title" matInput formControlName="courseTitleCtrl">
+                    @if(videoFormGroup.get('courseTitleCtrl')?.invalid &&
+                    videoFormGroup.get('courseTitleCtrl')?.touched) {
 
                     <mat-error>
                         Course Title is <strong>required</strong>
@@ -67,7 +69,8 @@
                 <mat-form-field style="width: 100%;">
                     <mat-label>Price</mat-label>
                     <input type="number" matInput formControlName="coursePriceCtrl">
-                    @if(videoFormGroup.controls.courseTitleCtrl.hasError('required')) {
+                    @if(videoFormGroup.get('coursePriceCtrl')?.invalid &&
+                    videoFormGroup.get('coursePriceCtrl')?.touched) {
 
                     <mat-error>
                         Course Price is <strong>required</strong>
@@ -121,7 +124,7 @@
         }
         <div>
             <button style="width: 134px; height: 44px; font-size: medium;" mat-raised-button color="primary"
-                type="submit">Submit</button>
+                type="submit" (click)="submit()">Submit</button>
         </div>
-    </form>
+    </div>
 </div>
