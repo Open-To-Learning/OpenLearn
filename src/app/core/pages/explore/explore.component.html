@@ -6,12 +6,21 @@
       <app-loading-card></app-loading-card>
       <app-loading-card></app-loading-card>
       <app-loading-card></app-loading-card>
+      <app-loading-card></app-loading-card>
+      <app-loading-card></app-loading-card>
     <!-- </div> -->
   }
   @else {
-    <ng-container *ngFor="let obj of listOfCourses">
+    <ng-container *ngFor="let obj of dataSource">
       <app-course-card [course]="obj"></app-course-card>
     </ng-container>
   }
   
 </main>
+<mat-paginator style="margin: 10px auto;"
+
+[length]="listOfCourses.length"
+[pageSize]="listSize"
+(page)="onListPageChange($event)"
+[pageSizeOptions]="listSizeOptions">
+</mat-paginator>
