@@ -3,11 +3,12 @@ import { CourseCardComponent } from '../../components/course-card/course-card.co
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingCardComponent } from '../../components/lodings/loading-card/loading-card.component';
 
 @Component({
   selector: 'app-explore',
   standalone: true,
-  imports: [CourseCardComponent, HttpClientModule, CommonModule, MatProgressSpinnerModule],
+  imports: [CourseCardComponent, HttpClientModule, CommonModule, MatProgressSpinnerModule,LoadingCardComponent],
   templateUrl: './explore.component.html',
   styleUrl: './explore.component.scss'
 })
