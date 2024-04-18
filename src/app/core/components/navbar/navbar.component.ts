@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { log } from 'console';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -38,29 +39,26 @@ export class NavbarComponent implements OnInit {
     this.checkCookie().subscribe((res: any) => {
       if (res.ok) {
         console.log('cookies found!');
+        this.profileFloatingNavigation[0].link = '/user/'+res.userName;
+        console.log(res);
+        
         this.isuserLoggedIn = true;
       } else {
         console.log('cookies not found!');
-        // window.location.href = '/login';
+        // window.location.href = '/login';   // this is infinite loop donot uncomment
       }
     });
   }
 
   private handleError(error: HttpErrorResponse):any {
     // do nothing for now
-    return [];
+    
+    return of([]);
   }
 
   checkCookie(): Observable<any> {
     return this.http.get('http://localhost:5000/auth/is-valid-Cookie', { withCredentials: true }).pipe(
-      catchError(this.handleError),
-      tap((res: any) => {
-        if (!res.ok) {
-          // If user is not authenticated, redirect to login page
-          window.location.href = '/login';
-        }
-        this.profileFloatingNavigation[0].link = '/user/'+res.userName
-      })
+      catchError(this.handleError)
     );
   }
 
