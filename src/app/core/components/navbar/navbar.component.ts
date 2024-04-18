@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -46,8 +46,14 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  private handleError(error: HttpErrorResponse):any {
+    // do nothing for now
+    return [];
+  }
+
   checkCookie(): Observable<any> {
     return this.http.get('http://localhost:5000/auth/is-valid-Cookie', { withCredentials: true }).pipe(
+      catchError(this.handleError),
       tap((res: any) => {
         if (!res.ok) {
           // If user is not authenticated, redirect to login page
