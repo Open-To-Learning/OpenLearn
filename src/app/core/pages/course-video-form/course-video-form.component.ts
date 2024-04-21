@@ -41,7 +41,7 @@ interface Video {
 export class CourseVideoFormComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
-  isLoading:boolean = false;
+  isLoading: boolean = false;
 
   video: Video = {
     link: '',
@@ -63,6 +63,7 @@ export class CourseVideoFormComponent implements OnInit {
     });
     this.videoFormGroup.get('courseVideoLinkCtrl')?.valueChanges.subscribe(newVal => {
       this.video.link = newVal;
+      this.fetchedSuccess = false;
     });
     this.videoFormGroup.get('courseTitleCtrl')?.valueChanges.subscribe(newVal => {
       this.video.title = newVal;
@@ -118,7 +119,7 @@ export class CourseVideoFormComponent implements OnInit {
         if (!res.ok) {
           this._snackBar.openFromComponent(CustomSnackComponent, {
             duration: 2000,
-            data: {message: res.message, snackType: "error"}
+            data: { message: res.message, snackType: "error" }
           });
           this.isLoading = false;
           return;
@@ -134,16 +135,16 @@ export class CourseVideoFormComponent implements OnInit {
 
         this._snackBar.openFromComponent(CustomSnackComponent, {
           duration: 3000,
-          data: {message: res.message, snackType: "success"}
+          data: { message: res.message, snackType: "success" }
         });
 
         this.fetchedSuccess = true;
         this.isLoading = false;
       })
-    } catch (error:any) {
+    } catch (error: any) {
       this._snackBar.openFromComponent(CustomSnackComponent, {
         duration: 2000,
-        data: {message: error.error.message, snackType: "error"}
+        data: { message: error.error.message, snackType: "error" }
       });
       this.isLoading = false;
     }
@@ -172,14 +173,38 @@ export class CourseVideoFormComponent implements OnInit {
     }
   }
 
+  isSubmitting: boolean = false;
   submit() {
-    const id:string = this.extractVideoId(this.video.link);
-    this.http.put('http://localhost:5000/auth/addvideo',{youtubeVideoId:id},{withCredentials:true}).subscribe((res:any)=>{
+    this.isSubmitting = true;
+    const id: string = this.extractVideoId(this.video.link);
+    this.http.put('http://localhost:5000/auth/addvideo', { youtubeVideoId: id }, { withCredentials: true }).subscribe((res: any) => {
 
       console.log(res);
-      
+      if (res.ok) {
+        this._snackBar.openFromComponent(CustomSnackComponent, {
+          duration: 3000,
+          data: { message: res.message, snackType: "success" }
+        });
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 3000);
+      }
+      else {
+        this._snackBar.openFromComponent(CustomSnackComponent, {
+          duration: 3000,
+          data: { message: res.message, snackType: "error" }
+        });
+        this.isSubmitting = false;
+      }
+
+    }, (error:HttpErrorResponse) => {
+      this._snackBar.openFromComponent(CustomSnackComponent, {
+        duration: 3000,
+        data: { message: error.error.message, snackType: "error" }
+      });
+      this.isSubmitting = false;
     })
-   
+
 
   }
 }

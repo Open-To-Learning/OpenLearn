@@ -29,9 +29,11 @@ export class SignupComponent {
   // }
 
   isLoading: boolean = false;
+  isSigning: boolean = false;
 
   sendUserDetails(event: Event) {
     this.isLoading = true;
+    this.isSigning = true;
     event.preventDefault();
     console.log({
       fullName: this.fullName,
@@ -56,6 +58,7 @@ export class SignupComponent {
         // Use Router for programmatic redirection with timeout
         setTimeout(() => {
           window.location.href = '/';
+          // this.isSigning = false;
         }, 3000);
       }
       else {
@@ -63,6 +66,7 @@ export class SignupComponent {
           duration: 2000,
           data: {message: res.message, snackType: "warn"}
         });
+        this.isSigning = false;
       }
       this.isLoading = false;
       console.log(res);
@@ -73,6 +77,7 @@ export class SignupComponent {
         data: {message: error.error.message, snackType: "error"}
       });
       this.isLoading = false;
+      this.isSigning = false;
     });
 
   }

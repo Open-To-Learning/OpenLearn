@@ -26,9 +26,11 @@ export class LoginComponent {
   // }
 
   isLoading: boolean = false;
+  isLogging: boolean  = false;
 
   sendUserDetails(event: Event) {
     this.isLoading = true;
+    this.isLogging = true;
     event.preventDefault();
     console.log({
       userName: this.userName,
@@ -49,6 +51,7 @@ export class LoginComponent {
         
         setTimeout(() => {
           window.location.href = '/';
+          // this.isLogging = false;
         }, 3000);
       }
       else {
@@ -56,6 +59,7 @@ export class LoginComponent {
           duration: 2000,
           data: {message: res.message, snackType: "warn"}
         });
+        this.isLogging = false;
       }
       this.isLoading = false;
       console.log(res);
@@ -68,6 +72,7 @@ export class LoginComponent {
         data: {message: error.error.message, snackType: "error"}
       });
       this.isLoading = false;
+      this.isLogging = false;
     });
   }
 }
