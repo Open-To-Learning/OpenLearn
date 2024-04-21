@@ -105,7 +105,9 @@ a {
     padding-inline: 15px;
 }
 
-
+.section {
+    padding-block: $section-padding;
+}
 
 .shape {
     position: absolute;
@@ -264,9 +266,9 @@ a {
   #HERO
 \*-----------------------------------*/
 
-// .hero {
-//     padding-block-start: calc($section-padding + 80px);
-// }
+.hero {
+    padding-block-start: calc($section-padding + 80px);
+}
 
 .hero .container {
     display: grid;
@@ -901,9 +903,9 @@ a {
    * HERO
    */
 
-    // .hero {
-    //     padding-block-start: calc($section-padding + 90px);
-    // }
+    .hero {
+        padding-block-start: calc($section-padding + 90px);
+    }
 
     .hero .container {
         gap: 50px;
