@@ -39,21 +39,33 @@ export class LoginComponent {
       userName: this.userName,
       password: this.password
     }, { withCredentials: true }).subscribe((res: any) => {
+      
       if (res.ok) {
 
-        window.location.href = '/';
+        this._snackBar.openFromComponent(CustomSnackComponent, {
+          duration: 3000,
+          data: {message: res.message, snackType: "success"}
+        });
+        
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 3000);
+      }
+      else {
         this._snackBar.openFromComponent(CustomSnackComponent, {
           duration: 2000,
-          data: {message: "Logged In Successfully", snackType: "success"}
+          data: {message: res.message, snackType: "warn"}
         });
       }
       this.isLoading = false;
       console.log(res);
 
     }, (error: HttpErrorResponse) => {
+      
       this._snackBar.openFromComponent(CustomSnackComponent, {
         duration: 2000,
-        data: {message: "Login Failed: Wrong username/password", snackType: "error"}
+        // data: {message: "Login Failed: Wrong username/password", snackType: "error"}
+        data: {message: error.error.message, snackType: "error"}
       });
       this.isLoading = false;
     });

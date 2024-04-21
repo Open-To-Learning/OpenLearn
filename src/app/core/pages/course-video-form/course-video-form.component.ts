@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormsModule, ReactiveFormsModule, FormBuilder, FormControl, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CustomSnackComponent } from '../../components/popups/custom-snack/custom-snack.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Video {
   link: string,
@@ -37,7 +39,7 @@ interface Video {
   styleUrl: './course-video-form.component.scss'
 })
 export class CourseVideoFormComponent implements OnInit {
-  constructor(private _formBuilder: FormBuilder, private http: HttpClient) { }
+  constructor(private _formBuilder: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   isLoading:boolean = false;
 
@@ -114,6 +116,10 @@ export class CourseVideoFormComponent implements OnInit {
       this.http.get(`http://localhost:5000/api/v1/yt-video-url/${videoID}/video-details`, { withCredentials: true }).subscribe((res: any) => {
         console.log(res);
         if (!res.ok) {
+          this._snackBar.openFromComponent(CustomSnackComponent, {
+            duration: 2000,
+            data: {message: res.message, snackType: "error"}
+          });
           this.isLoading = false;
           return;
         }
@@ -125,10 +131,20 @@ export class CourseVideoFormComponent implements OnInit {
         // this.video.description = res.description;
 
         this.setValue(res);
+
+        this._snackBar.openFromComponent(CustomSnackComponent, {
+          duration: 3000,
+          data: {message: res.message, snackType: "success"}
+        });
+
         this.fetchedSuccess = true;
         this.isLoading = false;
       })
-    } catch (err) {
+    } catch (error:any) {
+      this._snackBar.openFromComponent(CustomSnackComponent, {
+        duration: 2000,
+        data: {message: error.error.message, snackType: "error"}
+      });
       this.isLoading = false;
     }
 

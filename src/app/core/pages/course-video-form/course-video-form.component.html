@@ -117,8 +117,14 @@
             </div>
         }
         <div>
-            <button style="width: 134px; height: 44px; font-size: medium;" mat-raised-button color="primary"
-                type="submit" (click)="submit()">Submit</button>
+            @if(fetchedSuccess) {
+                <button style="width: 134px; height: 44px; font-size: medium;" mat-raised-button color="primary"
+                    type="submit" (click)="submit()">Submit</button>
+            }
+            @else {
+                <button style="width: 134px; height: 44px; font-size: medium;" mat-raised-button color="primary"
+                    type="submit" (click)="submit()" disabled>Submit</button>
+            }
         </div>
     </div>
 </div>
